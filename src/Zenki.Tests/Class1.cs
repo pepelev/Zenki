@@ -3,7 +3,7 @@ using Zenki.UI;
 
 namespace Zenki.Tests
 {
-    public class Class1
+    public sealed class Class1
     {
         [Test]
         public void Test()
@@ -15,7 +15,6 @@ namespace Zenki.Tests
             foreach (var item in output)
             {
                 sut.Add(('a', 'b', 'c'), 43);
-
             }
         }
     }
