@@ -23,7 +23,6 @@ namespace Zenki.Tests
             var trigram = ('a', 'b', 'c');
 
             sut.Search(trigram).Should().BeEmpty();
-
         }
 
         [Test]
