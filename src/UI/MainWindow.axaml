@@ -6,7 +6,13 @@
         x:Class="Zenki.UI.MainWindow"
         Title="Zenki">
     <StackPanel>
-        <Label>Welcome to Zenki!</Label>
-        <Button>Click on me and nothing will happen!</Button>
+        <Grid ColumnDefinitions="Auto,*" RowDefinitions="*,*" Margin="4">
+            <Label Grid.Row="0" Grid.Column="0" >File</Label>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding FilePath}" />
+
+            <Label Grid.Row="1" Grid.Column="0">Query</Label>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Query}"></TextBox>
+        </Grid>
+        <TextBlock Text="{Binding Found}"></TextBlock>
     </StackPanel>
 </Window>
