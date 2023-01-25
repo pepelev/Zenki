@@ -84,7 +84,7 @@ public sealed class Data : INotifyPropertyChanged
             result.AddRange(index.Search(entry).Select(e => e.Line));
         }
         
-        return result;
+        return result.ToHashSet();
     }
 
     public string? Found { get; set; }
