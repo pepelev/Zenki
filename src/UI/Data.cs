@@ -41,6 +41,7 @@ public sealed class Data : INotifyPropertyChanged
                 }
             }
 
+            // newIndex.linesCount = lines.Length; //new
             (index, filePath) = (newIndex, value);
         }
     }
