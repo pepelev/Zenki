@@ -71,13 +71,20 @@ public sealed class Data : INotifyPropertyChanged
 
     private static IEnumerable<string> Search(string query, ITrigramIndex<char, (int Index, string Line)> index)
     {
-        var head = Trigram.StringToTrigrams(query).Take(1).ToArray();
+        var head = Trigram.StringToTrigrams(query).ToArray();
         if (head.Length == 0)
         {
             return Enumerable.Empty<string>();
         }
 
-        return index.Search(head[0]).Select(entry => entry.Line);
+        var result = new List<string>();
+        
+        foreach (var entry in head)
+        {
+            result.AddRange(index.Search(entry).Select(e => e.Line));
+        }
+        
+        return result;
     }
 
     public string? Found { get; set; }
