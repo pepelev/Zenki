@@ -39,4 +39,9 @@ public sealed class TrigramIndex<TKey, TValue> : ITrigramIndex<TKey, TValue>
         }
         return Enumerable.Empty<TValue>();
     }
+
+    public double GetWeight((TKey, TKey, TKey) trigram)
+    {
+        return indexes[trigram].Count;
+    }
 }

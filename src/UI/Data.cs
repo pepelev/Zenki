@@ -41,7 +41,6 @@ public sealed class Data : INotifyPropertyChanged
                 }
             }
 
-            // newIndex.linesCount = lines.Length; //new
             (index, filePath) = (newIndex, value);
         }
     }
@@ -72,19 +71,15 @@ public sealed class Data : INotifyPropertyChanged
     private static IEnumerable<string> Search(string query, ITrigramIndex<char, (int Index, string Line)> index)
     {
         var head = Trigram.StringToTrigrams(query).ToArray();
-        if (head.Length == 0)
-        {
-            return Enumerable.Empty<string>();
-        }
 
-        var result = new List<string>();
-        
-        foreach (var entry in head)
-        {
-            result.AddRange(index.Search(entry).Select(e => e.Line));
-        }
-        
-        return result.ToHashSet();
+        return head.Length == 0
+            ? Enumerable.Empty<string>()
+            : head
+                .Select(entry => index.Search(entry).ToList())
+                .OrderBy(e => e.Count)
+                .SelectMany(e => e)
+                .Select(e => e.Line)
+                .Distinct();
     }
 
     public string? Found { get; set; }
