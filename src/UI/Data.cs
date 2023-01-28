@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace Zenki.UI;
 public sealed class Data : INotifyPropertyChanged
 {
     private string filePath = @"C:\Users";
+    // private string filePath = @"E:\input\system.log";
     private string query = "";
     private TrigramIndex<char, (int Index, string Line)>? index;
 
@@ -72,14 +74,31 @@ public sealed class Data : INotifyPropertyChanged
     {
         var head = Trigram.StringToTrigrams(query).ToArray();
 
+        var weights = new List<(string Line, double Weight)>();
+
+        foreach (var trigram in head)
+        {
+            var searchResult = index.Search(trigram).Select(e=> e.Line).ToList();
+            var linesCount = searchResult.Count;
+            
+            weights.AddRange(searchResult.Select((entry, i) => (entry, Math.Log(linesCount - i + 1) / linesCount)));
+        }
+
         return head.Length == 0
             ? Enumerable.Empty<string>()
-            : head
-                .Select(entry => index.Search(entry).ToList())
-                .OrderBy(e => e.Count)
-                .SelectMany(e => e)
+            : weights
+                .OrderByDescending(e => e.Weight)
                 .Select(e => e.Line)
                 .Distinct();
+        
+        // return head.Length == 0
+        //     ? Enumerable.Empty<string>()
+        //     : head
+        //         .Select(entry => index.Search(entry).ToList())
+        //         .OrderBy(e => e.Count)
+        //         .SelectMany(e => e)
+        //         .Select(e => e.Line)
+        //         .Distinct();
     }
 
     public string? Found { get; set; }
