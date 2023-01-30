@@ -7,7 +7,7 @@ namespace Zenki.UI;
 public sealed class TrigramIndex<TKey, TValue> : ITrigramIndex<TKey, TValue>
 {
     // public int linesCount = 1;
-    public Dictionary<(TKey, TKey, TKey), Dictionary<TValue, double>> indexes = new(); //key is value; value is weight
+    private Dictionary<(TKey, TKey, TKey), Dictionary<TValue, double>> indexes = new(); //key is value; value is weight
 
     public void Add((TKey, TKey, TKey) trigram, TValue value)
     {

@@ -13,7 +13,7 @@ public sealed class Data : INotifyPropertyChanged
     private string filePath = @"C:\Users";
     // private string filePath = @"E:\input\system.log";
     private string query = "";
-    private TrigramIndex<char, (int Index, string Line)>? index;
+    private TrigramIndex<Rune, (int Index, string Line)>? index;
 
     public string FilePath
     {
@@ -32,7 +32,7 @@ public sealed class Data : INotifyPropertyChanged
             }
 
             var lines = File.ReadAllLines(value, Encoding.UTF8);
-            var newIndex = new TrigramIndex<char, (int Index, string Line)>();
+            var newIndex = new TrigramIndex<Rune, (int Index, string Line)>();
             for (var i = 0; i < lines.Length; i++)
             {
                 var line = lines[i];
@@ -70,7 +70,7 @@ public sealed class Data : INotifyPropertyChanged
         }
     }
 
-    private static IEnumerable<string> Search(string query, ITrigramIndex<char, (int Index, string Line)> index)
+    private static IEnumerable<string> Search(string query, ITrigramIndex<Rune, (int Index, string Line)> index)
     {
         var head = Trigram.StringToTrigrams(query).ToArray();
 
