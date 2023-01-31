@@ -74,22 +74,28 @@ public sealed class Data : INotifyPropertyChanged
     {
         var head = Trigram.StringToTrigrams(query).ToArray();
 
-        var weights = new List<(string Line, double Weight)>();
+        var lines = new Dictionary<int, string>();
+        var weights = new Dictionary<int, double>();
 
         foreach (var trigram in head)
         {
-            var searchResult = index.Search(trigram).Select(e=> e.Line).ToList();
-            var linesCount = searchResult.Count;
-            
-            weights.AddRange(searchResult.Select((entry, i) => (entry, Math.Log(linesCount - i + 1) / linesCount)));
+            var linesContainingTrigram = index.Search(trigram).ToList();
+            foreach (var (i, line) in linesContainingTrigram)
+            {
+                lines[i] = line;
+                var w = 1.0 / (1 + Math.Log(linesContainingTrigram.Count));
+                if (weights.ContainsKey(i))
+                    weights[i] += w;
+                else
+                    weights[i] = w;
+            }
         }
 
-        return head.Length == 0
+        return lines.Count == 0
             ? Enumerable.Empty<string>()
             : weights
-                .OrderByDescending(e => e.Weight)
-                .Select(e => e.Line)
-                .Distinct();
+                .OrderByDescending(x => x.Value)
+                .Select(x => lines[x.Key]);
         
         // return head.Length == 0
         //     ? Enumerable.Empty<string>()

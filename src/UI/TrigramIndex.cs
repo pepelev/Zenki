@@ -7,41 +7,24 @@ namespace Zenki.UI;
 public sealed class TrigramIndex<TKey, TValue> : ITrigramIndex<TKey, TValue>
 {
     // public int linesCount = 1;
-    private Dictionary<(TKey, TKey, TKey), Dictionary<TValue, double>> indexes = new(); //key is value; value is weight
+    private Dictionary<(TKey, TKey, TKey), List<TValue>> indexes = new();
 
     public void Add((TKey, TKey, TKey) trigram, TValue value)
     {
         if (indexes.ContainsKey(trigram))
         {
-            if (indexes[trigram].ContainsKey(value))
-                indexes[trigram][value]++;
-            else
-                indexes[trigram][value] = 0;
+            indexes[trigram].Add(value);
         }
         else
         {
-            indexes[trigram] = new Dictionary<TValue, double>
-            {
-                { value, 0 }
-            };
+            indexes[trigram] = new List<TValue> { value };
         }
     }
 
     public IEnumerable<TValue> Search((TKey, TKey, TKey) trigram)
     {
-        if (indexes.TryGetValue(trigram, out var value))
-        {
-            //var idf = Math.Log((double)linesCount / indexes[trigram].Count);
-            return value
-                .OrderByDescending(x => x.Value)
-                .Select(x=>x.Key)
-                .ToList();
-        }
-        return Enumerable.Empty<TValue>();
-    }
-
-    public double GetWeight((TKey, TKey, TKey) trigram)
-    {
-        return indexes[trigram].Count;
+        return indexes.TryGetValue(trigram, out var value)
+            ? value.ToList()
+            : Enumerable.Empty<TValue>();
     }
 }
