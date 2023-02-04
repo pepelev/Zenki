@@ -3,10 +3,10 @@ using Zenki.UI;
 
 namespace Zenki.Tests
 {
-    public sealed class Class1
+    public sealed class TrigramIndexShould
     {
         [Test]
-        public void Test()
+        public void NotOverrideValues()
         {
             var sut = new TrigramIndex<char, int>();
 
@@ -16,6 +16,7 @@ namespace Zenki.Tests
             {
                 sut.Add(('a', 'b', 'c'), 43);
             }
+            //
         }
     }
 }

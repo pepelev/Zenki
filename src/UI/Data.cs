@@ -72,22 +72,21 @@ public sealed class Data : INotifyPropertyChanged
 
     private static IEnumerable<string> Search(string query, ITrigramIndex<Rune, (int Index, string Line)> index)
     {
-        var head = Trigram.StringToTrigrams(query).ToArray();
+        var trigrams = Trigram.StringToTrigrams(query).ToList();
 
         var lines = new Dictionary<int, string>();
         var weights = new Dictionary<int, double>();
 
-        foreach (var trigram in head)
+        foreach (var linesContainingTrigram in trigrams.Select(trigram => index.Search(trigram).ToList()))
         {
-            var linesContainingTrigram = index.Search(trigram).ToList();
             foreach (var (i, line) in linesContainingTrigram)
             {
                 lines[i] = line;
-                var w = 1.0 / (1 + Math.Log(linesContainingTrigram.Count));
+                var weight = 1.0 / (1 + Math.Log(linesContainingTrigram.Count));
                 if (weights.ContainsKey(i))
-                    weights[i] += w;
+                    weights[i] += weight;
                 else
-                    weights[i] = w;
+                    weights[i] = weight;
             }
         }
 
@@ -96,15 +95,6 @@ public sealed class Data : INotifyPropertyChanged
             : weights
                 .OrderByDescending(x => x.Value)
                 .Select(x => lines[x.Key]);
-        
-        // return head.Length == 0
-        //     ? Enumerable.Empty<string>()
-        //     : head
-        //         .Select(entry => index.Search(entry).ToList())
-        //         .OrderBy(e => e.Count)
-        //         .SelectMany(e => e)
-        //         .Select(e => e.Line)
-        //         .Distinct();
     }
 
     public string? Found { get; set; }

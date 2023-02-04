@@ -6,8 +6,7 @@ namespace Zenki.UI;
 
 public sealed class TrigramIndex<TKey, TValue> : ITrigramIndex<TKey, TValue>
 {
-    // public int linesCount = 1;
-    private Dictionary<(TKey, TKey, TKey), List<TValue>> indexes = new();
+    private readonly Dictionary<(TKey, TKey, TKey), List<TValue>> indexes = new();
 
     public void Add((TKey, TKey, TKey) trigram, TValue value)
     {

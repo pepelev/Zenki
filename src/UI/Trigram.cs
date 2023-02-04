@@ -7,9 +7,10 @@ namespace Zenki.UI;
 
 public class Trigram
 {
+    private static readonly Regex MultipleWhitespaces = new Regex(@"\s+", RegexOptions.Compiled);
     public static IEnumerable<(Rune, Rune, Rune)> StringToTrigrams(string s)
     {
-        s = Regex.Replace(s, @"\s+", " ").ToLowerInvariant();
+        s = MultipleWhitespaces.Replace(s, " ").ToLowerInvariant();
 
         if (s.Length < 3)
             yield break;
