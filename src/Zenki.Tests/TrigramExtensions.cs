@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Zenki.UI;
+namespace Zenki.Tests;
 
 public static class TrigramExtensions
 {
