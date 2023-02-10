@@ -5,14 +5,25 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Zenki.UI.MainWindow"
         Title="Zenki">
-    <StackPanel>
-        <Grid ColumnDefinitions="Auto,*" RowDefinitions="*,*" Margin="4">
-            <Label Grid.Row="0" Grid.Column="0" >File</Label>
-            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding FilePath}" />
+    <DockPanel>
+        <Grid ColumnDefinitions="Auto,*" RowDefinitions="*,*,*" DockPanel.Dock="Top" Margin="6">
+            <Label Grid.Row="0" Grid.Column="0">File</Label>
+            <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding FilePath}" FontFamily="Consolas"/>
 
             <Label Grid.Row="1" Grid.Column="0">Query</Label>
-            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Query}"></TextBox>
+            <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Query}" FontFamily="Consolas"/>
+            <TextBlock
+                Grid.Row="2"
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                IsVisible="{Binding UseResultOrder}"
+                Foreground="red"
+            >
+                ResultOrder
+            </TextBlock>
         </Grid>
-        <TextBlock Text="{Binding Found}"></TextBlock>
-    </StackPanel>
+        <ScrollViewer VerticalScrollBarVisibility="Visible" AllowAutoHide="False" Padding="6">
+            <TextBlock Text="{Binding Found}" TextWrapping="Wrap" FontFamily="Consolas"/>
+        </ScrollViewer>
+    </DockPanel>
 </Window>

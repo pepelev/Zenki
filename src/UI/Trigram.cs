@@ -24,4 +24,5 @@ public class Trigram
                 yield return (runes[i - 2], runes[i - 1], runes[i]);
         }
     }
+
 }

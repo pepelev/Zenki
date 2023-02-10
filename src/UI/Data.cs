@@ -3,17 +3,22 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Zenki.UI;
 
 public sealed class Data : INotifyPropertyChanged
 {
-    private string filePath = @"C:\Users";
-    // private string filePath = @"E:\input\system.log";
+    private bool useResultOrder = false;
+    private string filePath = "";
     private string query = "";
-    private TrigramIndex<Rune, (int Index, string Line)>? index;
+
+    private TrigramIndex<Rune, (long Offset, string Line)>? index;
+
+    public Data()
+    {
+        FilePath = @"../../log-examples/structure.log";
+    }
 
     public string FilePath
     {
@@ -25,21 +30,29 @@ public sealed class Data : INotifyPropertyChanged
                 return;
             }
 
-            if (!File.Exists(value))
+            if (!System.IO.File.Exists(value))
             {
                 filePath = value;
                 return;
             }
 
-            var lines = File.ReadAllLines(value, Encoding.UTF8);
-            var newIndex = new TrigramIndex<Rune, (int Index, string Line)>();
-            for (var i = 0; i < lines.Length; i++)
+            using var file = new File(
+                new FileStream(
+                    value,
+                    FileMode.Open,
+                    FileAccess.Read,
+                    FileShare.ReadWrite | FileShare.Delete,
+                    0
+                )
+            );
+            var newIndex = new TrigramIndex<Rune, (long Offset, string Line)>();
+            var valueTuples = new LogFile(file).ToList();
+            foreach (var (offset, entry) in valueTuples)
             {
-                var line = lines[i];
-                var trigrams = Trigram.StringToTrigrams(line);
+                var trigrams = Trigram.StringToTrigrams(entry.Raw);
                 foreach (var trigram in trigrams)
                 {
-                    newIndex.Add(trigram, (i, line));
+                    newIndex.Add(trigram, (offset, entry.Raw));
                 }
             }
 
@@ -47,6 +60,19 @@ public sealed class Data : INotifyPropertyChanged
         }
     }
 
+    public bool UseResultOrder
+    {
+        get => useResultOrder;
+        set
+        {
+            if (value != useResultOrder)
+            {
+                useResultOrder = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(UseResultOrder)));
+            }
+        }
+    }
+    
     public string Query
     {
         get => query;
@@ -63,19 +89,32 @@ public sealed class Data : INotifyPropertyChanged
                 return;
             }
 
-            var list = Search(value, index).Take(20);
+            const int threshold = 1000;
+            var list = Search(value, index).Take(threshold + 1).ToList();
+            if (list.Count <= threshold)
+            {
+                var order = new ResultOrder(value);
+                list.Sort(order);
+                UseResultOrder = true;
+            }
+            else
+            {
+                list = list.Take(25).ToList();
+                UseResultOrder = false;
+            }
+
             Found = string.Join("\n", list);
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Found)));
             query = value;
         }
     }
 
-    private static IEnumerable<string> Search(string query, ITrigramIndex<Rune, (int Index, string Line)> index)
+    private static IEnumerable<string> Search(string query, ITrigramIndex<Rune, (long Offset, string Line)> index)
     {
         var trigrams = Trigram.StringToTrigrams(query).ToList();
 
-        var lines = new Dictionary<int, string>();
-        var weights = new Dictionary<int, double>();
+        var lines = new Dictionary<long, string>();
+        var weights = new Dictionary<long, double>();
 
         foreach (var linesContainingTrigram in trigrams.Select(trigram => index.Search(trigram).ToList()))
         {

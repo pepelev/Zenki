@@ -6,6 +6,10 @@
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <RootNamespace>Zenki.UI</RootNamespace>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+        <OutputPath>../../bin/Zenki</OutputPath>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     </PropertyGroup>
 
     <ItemGroup>
