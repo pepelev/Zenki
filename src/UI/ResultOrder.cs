@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Zenki.UI;
@@ -15,6 +17,61 @@ public sealed class ResultOrder : IComparer<string>
     public ResultOrder(string query)
     {
         this.query = query;
+    }
+
+    private static int GetMaxSubArray(string query, string str)
+    {
+        var max = 0;
+        var curMax = 0;
+        var queryCount = query.Length;
+        
+        for (var k = 0; k < queryCount; k++)
+        {
+            if (queryCount - k < max) break;
+            var i = 0;
+            var j = k;
+            while (i < str.Length)
+            {
+                if (j >= queryCount) break;
+
+                if (query[j] == str[i])
+                {
+                    curMax++;
+                    i++;
+                    j++;
+                }
+
+                else
+                {
+                    curMax = 0;
+                    i++;
+                    j = k;
+                }
+
+                max = Math.Max(max, curMax);
+            }
+        }
+
+        return max;
+    }
+
+    private static int GetMaxSubsequence(string query, string str)
+    {
+        var max = 0;
+        for (var k = 0; k < query.Length; k++)
+        {
+            if (query.Length - k <= max) break;
+            
+            var j = k;
+
+            foreach (var c in str)
+            {
+                if (query[j] == c) j++;
+            }
+
+            max = Math.Max(max, j - k);
+        }
+        return max;
     }
 
     /// <summary>
@@ -42,6 +99,36 @@ public sealed class ResultOrder : IComparer<string>
         {
             return 0;
         }
+
+
+        var result = 0;
+        
+        // result = GetMaxSubArray(query, y)
+        //     .CompareTo(GetMaxSubArray(query,x));
+
+        if (result == 0)
+        {
+            result = GetMaxSubsequence(query, y)
+                .CompareTo(GetMaxSubsequence(query, x));
+        }
+        
+        var trigrams = Trigram.StringToTrigrams(query).ToList();
+        var xTrigrams = Trigram.StringToTrigrams(x).ToList();
+        var yTrigrams = Trigram.StringToTrigrams(y).ToList();
+
+        if (result == 0)
+        {
+            result = yTrigrams.Intersect(trigrams).Count()
+                .CompareTo(xTrigrams.Intersect(trigrams).Count());
+        }
+
+        if (result == 0)
+        {
+            result = y.Length.CompareTo(x.Length);
+        }
+
+        return result;
+        
 
         // Попробуй разбить строки на триграммы и понять где триграммы query лучше сопадатют с триграммами x и y.
         // Например, идут в том же порядке или вовсе подряд. Поразмыщляй, может придумаешь еще какие-нибудь адекватные критерии. 
