@@ -9,12 +9,13 @@ public sealed class ResultOrderShould
     [Test]
     public void CompareCorrectly()
     {
-        var x = "example";
-        var y = "exampeexampampl";
-        var query = "exampl";
+        var list = new List<string> { "aaa", "abc", "baab" };
+        var query = "aab";
 
-        var comp = new ResultOrder(query);
+        var resultOrder = new ResultOrder(query);
+        
+        list.Sort(resultOrder);
 
-        comp.Compare(x, y).Should().Be(-1);
+        list.Should().Equal(new List<string>{"baab", "abc", "aaa"});
     }
 }

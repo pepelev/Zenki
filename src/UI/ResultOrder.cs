@@ -23,16 +23,15 @@ public sealed class ResultOrder : IComparer<string>
     {
         var max = 0;
         var curMax = 0;
-        var queryCount = query.Length;
+        var queryLength = query.Length;
         
-        for (var k = 0; k < queryCount; k++)
+        for (var k = 0; k < queryLength && max <= queryLength - k; k++)
         {
-            if (queryCount - k < max) break;
             var i = 0;
             var j = k;
             while (i < str.Length)
             {
-                if (j >= queryCount) break;
+                if (j >= queryLength) break;
 
                 if (query[j] == str[i])
                 {
@@ -58,10 +57,8 @@ public sealed class ResultOrder : IComparer<string>
     private static int GetMaxSubsequence(string query, string str)
     {
         var max = 0;
-        for (var k = 0; k < query.Length; k++)
+        for (var k = 0; k < query.Length && max >= query.Length - k; k++)
         {
-            if (query.Length - k <= max) break;
-            
             var j = k;
 
             foreach (var c in str)
@@ -111,13 +108,12 @@ public sealed class ResultOrder : IComparer<string>
             result = GetMaxSubsequence(query, y)
                 .CompareTo(GetMaxSubsequence(query, x));
         }
-        
-        var trigrams = Trigram.StringToTrigrams(query).ToList();
-        var xTrigrams = Trigram.StringToTrigrams(x).ToList();
-        var yTrigrams = Trigram.StringToTrigrams(y).ToList();
 
         if (result == 0)
         {
+            var trigrams = Trigram.StringToTrigrams(query).ToList();
+            var xTrigrams = Trigram.StringToTrigrams(x).ToList();
+            var yTrigrams = Trigram.StringToTrigrams(y).ToList();
             result = yTrigrams.Intersect(trigrams).Count()
                 .CompareTo(xTrigrams.Intersect(trigrams).Count());
         }
@@ -128,11 +124,5 @@ public sealed class ResultOrder : IComparer<string>
         }
 
         return result;
-        
-
-        // Попробуй разбить строки на триграммы и понять где триграммы query лучше сопадатют с триграммами x и y.
-        // Например, идут в том же порядке или вовсе подряд. Поразмыщляй, может придумаешь еще какие-нибудь адекватные критерии. 
-        const int dummy = 0;
-        return dummy;
     }
 }
