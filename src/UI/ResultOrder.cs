@@ -98,7 +98,9 @@ public sealed class ResultOrder : IComparer<string>
     private static int GetMaxSubsequence(string query, string str)
     {
         var max = 0;
-        for (var k = 0; max + k >= query.Length; k++)
+        var queryLength = query.Length;
+        
+        for (var k = 0; k < queryLength && queryLength <= max + k; k++)
         {
             var j = k;
 
@@ -106,6 +108,7 @@ public sealed class ResultOrder : IComparer<string>
             {
                 if (query[j] == c) j++;
             }
+
             max = Math.Max(max, j - k);
         }
 
