@@ -36,7 +36,7 @@ jobs:
       run: dotnet tool install -g JetBrains.ReSharper.GlobalTools
 
     - name: Inspect
-      run: jb inspectcode src/Zenki.sln --build -f="text" -o="src/Inspections.txt" --settings=src/Zenki.sln.DotSettings --no-buildin-settings
+      run: jb inspectcode src/Zenki.sln --build -f="text" -o="src/Inspections.txt" -d
 
     - name: Report
       run: git diff --ignore-space-at-eol --exit-code src/Inspections.txt
