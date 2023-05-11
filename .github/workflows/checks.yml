@@ -16,7 +16,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.16
+        dotnet-version: 6
 
     - name: Test
       run: dotnet test --configuration Debug --verbosity normal src/Zenki.Tests
@@ -30,7 +30,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.16
+        dotnet-version: 6
 
     - name: Install inspection tool
       run: dotnet tool install -g JetBrains.ReSharper.GlobalTools
@@ -50,7 +50,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.16
+        dotnet-version: 6
 
     - name: Install inspection tool
       run: dotnet tool install -g JetBrains.ReSharper.GlobalTools
