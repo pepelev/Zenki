@@ -13,7 +13,6 @@ public sealed class LogFile : IEnumerable<(long Offset, LogEntry Entry)>
     public LogFile(File file)
     {
         this.file = file;
-        
     }
 
     public IEnumerator<(long Offset, LogEntry Entry)> GetEnumerator()
@@ -33,9 +32,7 @@ public sealed class LogFile : IEnumerable<(long Offset, LogEntry Entry)>
             var indexes = mark.Find(@string.Value);
             foreach (var index in indexes)
             {
-                logStarts.Add(
-                    left + @string.GetOffset(index)
-                );
+                logStarts.Add(left + @string.GetOffset(index));
             }
 
             @string.ReturnBuffer(pool);
@@ -47,11 +44,13 @@ public sealed class LogFile : IEnumerable<(long Offset, LogEntry Entry)>
         {
             var str = BytesBackedString.Utf8(bytes.Cut(sortedLogStarts[i], sortedLogStarts[i + 1]), pool);
             yield return (sortedLogStarts[i], structure.Parse(str.Value));
+
             str.ReturnBuffer(pool);
         }
 
         var lastStr = BytesBackedString.Utf8(bytes.Slice(sortedLogStarts[^1]), pool);
         yield return (sortedLogStarts[^1], structure.Parse(lastStr.Value));
+
         lastStr.ReturnBuffer(pool);
     }
 

@@ -15,6 +15,11 @@ public sealed class File : IDisposable
 
     public long Size => stream.Length;
 
+    public void Dispose()
+    {
+        stream.Dispose();
+    }
+
     public Chunk Slice(long offset)
     {
         if (stream.Length == 0)
@@ -52,20 +57,16 @@ public sealed class File : IDisposable
         // todo use file.Length to not show trailing nulls
         public long Size => view.Capacity;
 
-        public unsafe Bytes Bytes => new(
-            (byte*)view.SafeMemoryMappedViewHandle.DangerousGetHandle().ToPointer(),
-            Size
-        );
+        public unsafe Bytes Bytes
+            => new(
+                (byte*)view.SafeMemoryMappedViewHandle.DangerousGetHandle().ToPointer(),
+                Size
+            );
 
         public void Dispose()
         {
             view.Dispose();
             map.Dispose();
         }
-    }
-
-    public void Dispose()
-    {
-        stream.Dispose();
     }
 }

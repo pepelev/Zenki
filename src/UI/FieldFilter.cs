@@ -12,6 +12,6 @@ public sealed class FieldFilter : Filter
         this.field = field;
         this.value = value;
     }
-    
+
     public override bool Pass(LogEntry entry) => entry.Properties.Contains((field, value));
 }

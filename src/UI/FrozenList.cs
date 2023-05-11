@@ -15,11 +15,12 @@ public readonly struct FrozenList<T>
         this.count = count;
     }
 
-    public ReadOnlySpan<T> Span => content switch
-    {
-        null => ReadOnlySpan<T>.Empty,
-        { } array => new ReadOnlySpan<T>(array, 0, count)
-    };
+    public ReadOnlySpan<T> Span
+        => content switch
+        {
+            null      => ReadOnlySpan<T>.Empty,
+            { } array => new ReadOnlySpan<T>(array, 0, count)
+        };
 
     public void ReturnBuffer(ArrayPool<T> pool)
     {

@@ -19,8 +19,10 @@ public sealed class LMDBTrigramIndex : ITrigramIndex<char, long>, IDisposable
 
         env.Open();
         using var tx = env.BeginTransaction();
-        using var db = tx.OpenDatabase(dbName, new DatabaseConfiguration
-            { Flags = DatabaseOpenFlags.Create | DatabaseOpenFlags.DuplicatesSort });
+        using var db = tx.OpenDatabase(
+            dbName,
+            new DatabaseConfiguration { Flags = DatabaseOpenFlags.Create | DatabaseOpenFlags.DuplicatesSort }
+        );
         CheckSuccess(tx.Commit());
     }
 
@@ -31,11 +33,14 @@ public sealed class LMDBTrigramIndex : ITrigramIndex<char, long>, IDisposable
         var (a, b, c) = trigram;
         using var tx = env.BeginTransaction();
         using var db = tx.OpenDatabase(dbName, new DatabaseConfiguration { Flags = DatabaseOpenFlags.DuplicatesSort });
-        CheckSuccess(tx.Put(
-            db,
-            Encoding.UTF8.GetBytes($"{a}{b}{c}"),
-            BitConverter.GetBytes(value),
-            PutOptions.AppendDuplicateData));
+        CheckSuccess(
+            tx.Put(
+                db,
+                Encoding.UTF8.GetBytes($"{a}{b}{c}"),
+                BitConverter.GetBytes(value),
+                PutOptions.AppendDuplicateData
+            )
+        );
         CheckSuccess(tx.Commit());
     }
 
@@ -49,21 +54,31 @@ public sealed class LMDBTrigramIndex : ITrigramIndex<char, long>, IDisposable
 
         var keyStatus = cursor.Set(key);
         if (keyStatus != MDBResultCode.Success)
+        {
             yield break;
+        }
+
         cursor.FirstDuplicate();
 
         while (true)
         {
             var output = BitConverter.ToInt64(cursor.GetCurrent().value.AsSpan());
             yield return output;
-            if (cursor.NextDuplicate() != MDBResultCode.Success) break;
+
+            if (cursor.NextDuplicate() != MDBResultCode.Success)
+            {
+                break;
+            }
         }
     }
 
     private static void CheckSuccess(MDBResultCode result)
     {
         if (result == MDBResultCode.Success)
+        {
             return;
+        }
+
         throw new Exception("Transaction unsuccessful");
     }
 }
