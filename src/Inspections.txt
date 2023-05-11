@@ -1,7 +1,7 @@
 ﻿Solution src\Zenki.sln
     Project UI
       UI\Bytes.cs:66 Method 'Truncate' is never used
-      UI\Data.cs:25 Accessor 'FilePath.get' is never useds
+      UI\Data.cs:25 Accessor 'FilePath.get' is never used
       UI\Data.cs:76 Property 'Query' is never used
       UI\EntryPoint.cs:19 Method 'BuildAvaloniaApp' can be made private
       UI\File.cs:16 Property 'Size' is never used
