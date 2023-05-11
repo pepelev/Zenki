@@ -13,9 +13,9 @@ public sealed class ResultOrderShould
         var query = "aab";
 
         var resultOrder = new ResultOrder(query);
-        
+
         list.Sort(resultOrder);
 
-        list.Should().Equal(new List<string>{"baab", "abc", "aaa"});
+        list.Should().Equal(new List<string> { "baab", "abc", "aaa" });
     }
 }

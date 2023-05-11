@@ -9,7 +9,7 @@ namespace Zenki.UI;
 
 public sealed class Data : INotifyPropertyChanged
 {
-    private bool useResultOrder = false;
+    private bool useResultOrder;
     private string filePath = "";
     private string query = "";
 
@@ -72,7 +72,7 @@ public sealed class Data : INotifyPropertyChanged
             }
         }
     }
-    
+
     public string Query
     {
         get => query;
@@ -109,6 +109,9 @@ public sealed class Data : INotifyPropertyChanged
         }
     }
 
+    public string? Found { get; set; }
+    public event PropertyChangedEventHandler? PropertyChanged;
+
     private static IEnumerable<string> Search(string query, ITrigramIndex<Rune, (long Offset, string Line)> index)
     {
         var trigrams = Trigram.StringToTrigrams(query).ToList();
@@ -123,19 +126,20 @@ public sealed class Data : INotifyPropertyChanged
                 lines[i] = line;
                 var weight = 1.0 / (1 + Math.Log(linesContainingTrigram.Count));
                 if (weights.ContainsKey(i))
+                {
                     weights[i] += weight;
+                }
                 else
+                {
                     weights[i] = weight;
+                }
             }
         }
 
         return lines.Count == 0
             ? Enumerable.Empty<string>()
             : weights
-                .OrderByDescending(x => x.Value)
-                .Select(x => lines[x.Key]);
+             .OrderByDescending(x => x.Value)
+             .Select(x => lines[x.Key]);
     }
-
-    public string? Found { get; set; }
-    public event PropertyChangedEventHandler? PropertyChanged;
 }

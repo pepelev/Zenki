@@ -12,5 +12,4 @@ public sealed class AndFilter : Filter
     }
 
     public override bool Pass(LogEntry entry) => a.Pass(entry) && b.Pass(entry);
-
 }

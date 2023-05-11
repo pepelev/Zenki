@@ -32,28 +32,43 @@ public sealed class ResultOrder : IComparer<string>
     /// </returns>
     public int Compare(string? x, string? y) // эти две строки в том числе выдал алгоритм поиска по триграммам 
     {
-        if (x == null) return -1;
+        if (x == null)
+        {
+            return -1;
+        }
 
-        if (y == null) return 1;
+        if (y == null)
+        {
+            return 1;
+        }
 
-        if (x == y) return 0;
-
+        if (x == y)
+        {
+            return 0;
+        }
 
         // var result = GetMaxSubArray(query, y)
         //     .CompareTo(GetMaxSubArray(query,x));
 
         var result = GetMaxSubsequence(query, y)
-            .CompareTo(GetMaxSubsequence(query, x));
+           .CompareTo(GetMaxSubsequence(query, x));
 
-        if (result != 0) return result;
+        if (result != 0)
+        {
+            return result;
+        }
 
         var xTrigrams = Trigram.StringToTrigrams(x).ToList();
         var yTrigrams = Trigram.StringToTrigrams(y).ToList();
-        
-        result = yTrigrams.Intersect(queryTrigrams).Count()
-            .CompareTo(xTrigrams.Intersect(queryTrigrams).Count());
 
-        if (result != 0) return result;
+        result = yTrigrams.Intersect(queryTrigrams)
+                          .Count()
+                          .CompareTo(xTrigrams.Intersect(queryTrigrams).Count());
+
+        if (result != 0)
+        {
+            return result;
+        }
 
         result = y.Length.CompareTo(x.Length);
 
@@ -72,7 +87,10 @@ public sealed class ResultOrder : IComparer<string>
             var j = k;
             while (i < str.Length)
             {
-                if (j >= queryLength) break;
+                if (j >= queryLength)
+                {
+                    break;
+                }
 
                 if (query[j] == str[i])
                 {
@@ -105,7 +123,10 @@ public sealed class ResultOrder : IComparer<string>
 
             for (var i = 0; i < str.Length && j < query.Length; i++)
             {
-                if (query[j] == str[i]) j++;
+                if (query[j] == str[i])
+                {
+                    j++;
+                }
             }
 
             max = Math.Max(max, j - k);

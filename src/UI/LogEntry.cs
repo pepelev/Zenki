@@ -15,9 +15,9 @@ public sealed class LogEntry
     public string Raw { get; }
     public IReadOnlyCollection<(string Name, string Value)> Properties { get; }
 
-    public override string ToString() => Raw;
-
     public string PropertiesString => string.Join("; ", Properties);
+
+    public override string ToString() => Raw;
 
     public sealed class Structure
     {
@@ -64,6 +64,7 @@ public sealed class LogEntry
 
         public static StartMark Default { get; } = new(
             new Regex(
+
                 // 01:35:31.678 [INF]
                 @"^\d\d:\d\d:\d\d\.\d\d\d \[...\]",
                 RegexOptions.Multiline | RegexOptions.Compiled
@@ -71,7 +72,6 @@ public sealed class LogEntry
             maxMatchLength: 20
         );
 
-        public IEnumerable<int> Find(string text) =>
-            pattern.Matches(text).Select(match => match.Index);
+        public IEnumerable<int> Find(string text) => pattern.Matches(text).Select(match => match.Index);
     }
 }
