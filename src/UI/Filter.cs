@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace Zenki.UI;
 
@@ -14,8 +15,7 @@ public sealed class FieldFilter : Filter
     
     public override bool Pass(LogEntry entry)
     {
-        // if (entry.Properties...)
-        throw new NotImplementedException();
+        return entry.Properties.Contains((field, value));
     }
 }
 
@@ -24,10 +24,14 @@ public sealed class AndFilter : Filter
     private readonly Filter a;
     private readonly Filter b;
 
-    public override bool Pass(LogEntry entry)
-    {
-        throw new NotImplementedException();
-    }
+    public override bool Pass(LogEntry entry) => a.Pass(entry) & b.Pass(entry);
+
 }
 
-// public sealed class OrFilter : Filter
+public sealed class OrFilter : Filter
+{
+    private readonly Filter a;
+    private readonly Filter b;
+
+    public override bool Pass(LogEntry entry) => a.Pass(entry) | b.Pass(entry);
+}
