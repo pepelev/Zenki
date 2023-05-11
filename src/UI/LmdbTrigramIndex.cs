@@ -5,12 +5,12 @@ using LightningDB;
 
 namespace Zenki.UI;
 
-public sealed class LMDBTrigramIndex : ITrigramIndex<char, long>, IDisposable
+public sealed class LmdbTrigramIndex : ITrigramIndex<char, long>, IDisposable
 {
     private readonly string dbName = "trigrams";
     private readonly LightningEnvironment env;
 
-    public LMDBTrigramIndex(string name)
+    public LmdbTrigramIndex(string name)
     {
         env = new LightningEnvironment(name)
         {
