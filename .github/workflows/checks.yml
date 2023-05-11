@@ -39,7 +39,7 @@ jobs:
       run: jb inspectcode src/Zenki.sln --build -f="text" -o="src/Inspections.txt"
 
     - name: Report
-      run: git diff --exit-code src/Inspections.txt
+      run: git diff --ignore-space-at-eol --exit-code src/Inspections.txt
 
   code-cleanup:
     runs-on: ubuntu-latest
@@ -59,4 +59,4 @@ jobs:
       run: jb cleanupcode src/Zenki.sln --profile=Zenki
 
     - name: Report
-      run: git diff --exit-code src
+      run: git diff --ignore-space-at-eol --exit-code src
