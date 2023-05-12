@@ -4,7 +4,7 @@ using Zenki.UI;
 
 namespace Zenki.Tests;
 
-public sealed class LMDBTrigramIndexShould
+public sealed class LmdbTrigramIndexShould
 {
     private const string testDbName = "test";
 
@@ -20,7 +20,7 @@ public sealed class LMDBTrigramIndexShould
     [Test]
     public void Give_Nothing_When_Nothing_Added()
     {
-        using var sut = new LMDBTrigramIndex(testDbName);
+        using var sut = new LmdbTrigramIndex(testDbName);
 
         var trigram = ('a', 'b', 'c');
 
@@ -30,7 +30,7 @@ public sealed class LMDBTrigramIndexShould
     [Test]
     public void Give_Added_Value()
     {
-        using var sut = new LMDBTrigramIndex(testDbName);
+        using var sut = new LmdbTrigramIndex(testDbName);
 
         var trigram = ('a', 'b', 'c');
         var value = 10;
@@ -42,7 +42,7 @@ public sealed class LMDBTrigramIndexShould
     [Test]
     public void Give_Multiple_Added_Values()
     {
-        using var sut = new LMDBTrigramIndex(testDbName);
+        using var sut = new LmdbTrigramIndex(testDbName);
 
         var trigram = ('a', 'b', 'c');
         var value1 = 10L;

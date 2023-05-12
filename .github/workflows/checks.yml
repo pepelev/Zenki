@@ -1,0 +1,62 @@
+name: Checks
+
+on: [push, pull_request]
+defaults:
+  run:
+    working-directory: '.'
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6
+
+    - name: Test
+      run: dotnet test --configuration Debug --verbosity normal src/Zenki.Tests
+
+  inspections:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6
+
+    - name: Install inspection tool
+      run: dotnet tool install -g JetBrains.ReSharper.GlobalTools
+
+    - name: Inspect
+      run: jb inspectcode src/Zenki.sln --build -f="text" -o="src/Inspections.txt" -d
+
+    - name: Report
+      run: git diff --ignore-space-at-eol --exit-code src/Inspections.txt
+
+  code-cleanup:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6
+
+    - name: Install inspection tool
+      run: dotnet tool install -g JetBrains.ReSharper.GlobalTools
+
+    - name: Cleanup
+      run: jb cleanupcode src/Zenki.sln --profile=Zenki
+
+    - name: Report
+      run: git diff --ignore-space-at-eol --exit-code src

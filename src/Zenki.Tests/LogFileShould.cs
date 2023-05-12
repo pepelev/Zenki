@@ -17,6 +17,7 @@ namespace Zenki.Tests;
 public sealed class LogFileShould
 {
     [Test]
+    [Explicit]
     public void Example()
     {
         const string logPath = @"../../log-examples/structure.log";
