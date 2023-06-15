@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
+using Sprache;
 using Zenki.UI;
 
 namespace Zenki.Tests;
@@ -42,5 +43,14 @@ public sealed class FilterShould
         andFilter.Pass(emptyEntry).Should().BeFalse();
         andFilter.Pass(infEntry).Should().BeFalse();
         andFilter.Pass(errEntry).Should().BeFalse();
+    }
+
+    [Test]
+    public void ParseWithSprache()
+    {
+        var example = " sadness  =mood  ";
+        var filter = new FieldFilter("sadness", "mood");
+        var spr = FieldFilter.SpracheParseField(example);
+        spr.Should().BeEquivalentTo(filter);
     }
 }
