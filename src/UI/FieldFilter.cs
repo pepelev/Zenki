@@ -18,7 +18,8 @@ public sealed class FieldFilter : Filter
 
     private bool Equals(FieldFilter other) => field == other.field && value == other.value;
 
-    public override bool Equals(object? obj) => ReferenceEquals(this, obj) || obj is FieldFilter other && Equals(other);
+    public override bool Equals(object? obj) =>
+        ReferenceEquals(this, obj) || (obj is FieldFilter other && Equals(other));
 
     public override int GetHashCode() => HashCode.Combine(field, value);
 }
