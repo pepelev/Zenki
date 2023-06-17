@@ -48,9 +48,9 @@ public sealed class FilterShould
     [Test]
     public void ParseWithSprache()
     {
-        var example = " sadness  =mood  ";
+        const string example = " sadness  =mood  ";
         var filter = new FieldFilter("sadness", "mood");
-        var spr = FieldFilter.SpracheParseField(example);
+        var spr = QuerySyntax.FieldParser.Parse(example);
         spr.Should().BeEquivalentTo(filter);
     }
 }
