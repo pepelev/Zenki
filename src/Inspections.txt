@@ -22,8 +22,8 @@
       Zenki.Tests\Experiments.cs:18 Local variable 'status' is never used
       Zenki.Tests\Experiments.cs:18 Local variable 'rune' is never used
       Zenki.Tests\Experiments.cs:18 Local variable 'bytesConsumed' is never used
-      Zenki.Tests\FilterShould.cs:10 Name 'errValue' does not match rule 'Static readonly fields (private)'. Suggested name is 'ErrValue'.
-      Zenki.Tests\FilterShould.cs:11 Name 'infValue' does not match rule 'Static readonly fields (private)'. Suggested name is 'InfValue'.
+      Zenki.Tests\FilterShould.cs:9 Name 'errValue' does not match rule 'Static readonly fields (private)'. Suggested name is 'ErrValue'.
+      Zenki.Tests\FilterShould.cs:10 Name 'infValue' does not match rule 'Static readonly fields (private)'. Suggested name is 'InfValue'.
       Zenki.Tests\LmdbTrigramIndexShould.cs:9 Name 'testDbName' does not match rule 'Constant fields (private)'. Suggested name is 'TestDbName'.
       Zenki.Tests\TrigramIndexShould.cs:15 Local variable 'item' is never used
     

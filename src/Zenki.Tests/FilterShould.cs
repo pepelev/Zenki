@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
-using Sprache;
 using Zenki.UI;
 
 namespace Zenki.Tests;
