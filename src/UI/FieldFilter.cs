@@ -13,7 +13,7 @@ public sealed class FieldFilter : Filter
         this.field = field;
         this.value = value;
     }
-    
+
     public override bool Pass(LogEntry entry) => entry.Properties.Contains((field, value));
 
     private bool Equals(FieldFilter other) => field == other.field && value == other.value;

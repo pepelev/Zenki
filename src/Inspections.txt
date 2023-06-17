@@ -1,0 +1,30 @@
+﻿Solution src\Zenki.sln
+    Project UI
+      UI\Bytes.cs:66 Method 'Truncate' is never used
+      UI\Data.cs:25 Accessor 'FilePath.get' is never used
+      UI\Data.cs:76 Property 'Query' is never used
+      UI\EntryPoint.cs:19 Method 'BuildAvaloniaApp' can be made private
+      UI\File.cs:16 Property 'Size' is never used
+      UI\File.cs:44 Field 'file' is assigned but its value is never used
+      UI\File.cs:55 Property 'Offset' is never used
+      UI\File.cs:58 Property 'Size' can be made private
+      UI\ITrigramIndex.cs:7 Only implementations of method 'Add' are used
+      UI\LogEntry.cs:18 Property 'PropertiesString' is never used
+      UI\LogEntry.cs:24 Name 'severity' does not match rule 'Static readonly fields (private)'. Suggested name is 'Severity'.
+      UI\LogEntry.cs:29 Name 'colonProperty' does not match rule 'Static readonly fields (private)'. Suggested name is 'ColonProperty'.
+      UI\LogEntry.cs:57 Constructor 'StartMark' can be made private
+      UI\ResultOrder.cs:78 Method 'GetMaxSubArray' is never used
+      UI\Trigram.cs:8 Class 'Trigram' is never instantiated
+      UI\TrigramIndex.cs:12 Dictionary lookup can be simplified with 'TryGetValue'
+    
+    Project Zenki.Tests
+      Zenki.Tests\Experiments.cs:15 Local variable 'bytes' is never used
+      Zenki.Tests\Experiments.cs:18 Local variable 'status' is never used
+      Zenki.Tests\Experiments.cs:18 Local variable 'rune' is never used
+      Zenki.Tests\Experiments.cs:18 Local variable 'bytesConsumed' is never used
+      Zenki.Tests\FilterShould.cs:9 Name 'errValue' does not match rule 'Static readonly fields (private)'. Suggested name is 'ErrValue'.
+      Zenki.Tests\FilterShould.cs:10 Name 'infValue' does not match rule 'Static readonly fields (private)'. Suggested name is 'InfValue'.
+      Zenki.Tests\LmdbTrigramIndexShould.cs:9 Name 'testDbName' does not match rule 'Constant fields (private)'. Suggested name is 'TestDbName'.
+      Zenki.Tests\TrigramIndexShould.cs:15 Local variable 'item' is never used
+    
+  

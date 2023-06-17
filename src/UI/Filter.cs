@@ -1,5 +1,3 @@
-using System;
-
 namespace Zenki.UI;
 
 public abstract class Filter
