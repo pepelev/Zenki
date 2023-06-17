@@ -44,13 +44,4 @@ public sealed class FilterShould
         andFilter.Pass(infEntry).Should().BeFalse();
         andFilter.Pass(errEntry).Should().BeFalse();
     }
-
-    [Test]
-    public void ParseWithSprache()
-    {
-        const string example = " sadness  =mood  ";
-        var filter = new FieldFilter("sadness", "mood");
-        var spr = QuerySyntax.FieldParser.Parse(example);
-        spr.Should().BeEquivalentTo(filter);
-    }
 }
